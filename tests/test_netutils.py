@@ -1,30 +1,26 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-test_netutils
-----------------------------------
+from __future__ import (print_function, absolute_import, unicode_literals,
+                        division)
 
-Tests for `netutils` module.
-"""
+from neuron import h
 
-import pytest
-
-
-from netutils import netutils
+from netutils import RingNet
+import netutils as nu
 
 
-@pytest.fixture
-def response():
-    """Sample pytest fixture.
-    See more at: http://doc.pytest.org/en/latest/fixture.html
-    """
-    # import requests
-    # return requests.get('https://github.com/audreyr/cookiecutter-pypackage')
+def test_RingNet():
+    h.load_file("stdrun.hoc")   # load the standard run libraries
+    h.load_file("tests/cell.hoc")     # load the cell model
 
+    net = RingNet(NCELL=20, make_cell_fcn=h.B_BallStick)
+    recording = nu.SpikeRecorder(net.cell_list())
 
-def test_content(response):
-    """Sample pytest test function with the pytest fixture as an argument.
-    """
-    # from bs4 import BeautifulSoup
-    # assert 'GitHub' in BeautifulSoup(response.content).title.string
+    sc = nu.SimulationController()
+    sc.init_sim()
+    sc.run(100)
+
+    recording.print_spikes()
+    last = len(recording.idvec) - 1
+    assert abs(recording.tvec[last] - 99.65) < 0.001
+    assert int(recording.idvec[last]) == 12
