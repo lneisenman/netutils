@@ -3,10 +3,12 @@
 from __future__ import (print_function, absolute_import, unicode_literals,
                         division)
 
+import abc
+
 from neuron import h
 
 
-class BaseNet(object):
+class BaseNet(abc.ABC):
     ''' basic class for a network model
 
     subclass to build a particular network
@@ -52,13 +54,9 @@ class BaseNet(object):
         self.ncstim.delay = delay
         self.ncstim.weight[0] = 0.01
 
+    @abc.abstractmethod
     def connect_cells(self):
-        ''' connect the cells in the network
-
-        You must redefine in your subclass as this version throws an exception
-        '''
-        raise NotImplementedError(
-            "Dude, you need to write a connect_cells method")
+        ''' connect the cells in the network '''
 
     def cell_list(self):
         ''' return a list of the cells in the network '''
