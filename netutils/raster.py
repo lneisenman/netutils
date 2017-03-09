@@ -5,7 +5,8 @@ from __future__ import (print_function, absolute_import, unicode_literals,
 
 
 def draw_raster_plot(recording, start_time=0, end_time=None,
-                     start_contact=None, end_contact=None, display=False):
+                     start_contact=None, end_contact=None, color='black',
+                     display=False):
     ''' Make a rasterplot with Numpy and Matplotlib '''
     try:
         import numpy as np
@@ -42,7 +43,7 @@ def draw_raster_plot(recording, start_time=0, end_time=None,
         np.greater_equal(idvec, first_contact) & \
         np.less_equal(idvec, last_contact)
 
-    raster_plot = plt.plot(tvec[index], idvec[index], '|', c='black')
+    raster_plot = plt.plot(tvec[index], idvec[index], '|', c=color)
     if display is True:
         plt.show()
 
