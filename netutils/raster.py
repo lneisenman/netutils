@@ -43,6 +43,7 @@ def draw_raster_plot(recording, start_time=0, end_time=None,
         np.greater_equal(idvec, first_contact) & \
         np.less_equal(idvec, last_contact)
 
+    plt.figure()
     raster_plot = plt.plot(tvec[index], idvec[index], '|', c=color)
     if display is True:
         plt.show()
